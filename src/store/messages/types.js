@@ -1,0 +1,5 @@
+export const REGULAR_MESSAGE = 'irc_message'
+export const JOIN_MESSAGE = 'irc_join'
+export const PART_MESSAGE = 'irc_part'
+export const QUIT_MESSAGE = 'irc_quit'
+export const NICK_MESSAGE = 'irc_nick'

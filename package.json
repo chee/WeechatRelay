@@ -1,0 +1,39 @@
+{
+  "name": "WeechatRelay",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "jest-expo": "23.0.0",
+    "react-native-scripts": "1.8.0",
+    "react-test-renderer": "16.0.0"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "scripts": {
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "node node_modules/jest/bin/jest.js --watch"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "assert": "^1.4.1",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^5.0.8",
+    "cheerio": "^1.0.0-rc.2",
+    "events": "^1.1.1",
+    "expo": "^23.0.4",
+    "oembed": "^0.1.2",
+    "open-graph": "^0.2.3",
+    "ramda": "^0.25.0",
+    "react": "16.0.0",
+    "react-native": "0.50.3",
+    "redux-thunk": "^2.2.0",
+    "remote-redux-devtools": "^0.5.12",
+    "stream": "^0.0.2",
+    "util": "^0.10.3",
+    "zlib": "^1.0.5"
+  }
+}
