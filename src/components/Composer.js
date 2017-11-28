@@ -43,7 +43,8 @@ export default class Composer extends PureComponent {
     } = this.props
 
     return (
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior='position'>
         <TextInput
           autoFocus
           style={styles.input}

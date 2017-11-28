@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 
 import {
+  KeyboardAvoidingView,
   SafeAreaView,
   View,
   StyleSheet
@@ -30,11 +31,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   bufferList: {
-    flex: 0.2,
+    flex: 0.1,
     flexShrink: 1
   },
   buffer: {
-    flex: 1
+    flex: 2
   }
 })
 
@@ -65,7 +66,8 @@ class Main extends PureComponent {
 
     return (
       <SafeAreaView style={styles.view}>
-        <View style={styles.bufferWrap}>
+        <View
+          style={styles.bufferWrap}>
           <BufferList
             style={styles.bufferList}
             buffers={buffers}
