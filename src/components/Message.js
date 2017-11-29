@@ -1,10 +1,15 @@
 import React, {PureComponent} from 'react'
 
 import {
+  Linking,
   Text,
   View,
   StyleSheet
 } from 'react-native'
+
+import {
+  uniq
+} from 'ramda'
 
 import Embed from './Embed'
 
@@ -78,6 +83,9 @@ const addLinks = (text, components = []) => {
       {text.substr(0, index)}
     </Text>,
     <Text
+      onPress={() => {
+        Linking.openURL(url)
+      }}
       accessibilityRole='link'
       key={secondKey}
       style={styles.link}
@@ -146,8 +154,11 @@ export default class Message extends PureComponent {
             />
           }
         </View>
-        {urls.map(url =>
-          <Embed url={url} />
+        {uniq(urls).map(url =>
+          <Embed
+            key={url}
+            url={url}
+          />
         )}
       </View>
     )
