@@ -1,10 +1,18 @@
 import React, {PureComponent} from 'react'
 
 import {
-  ScrollView
+  FlatList,
+  StyleSheet,
+  KeyboardAvoidingView
 } from 'react-native'
 
 import Message from './Message'
+
+const styles = StyleSheet.create({
+  view: {
+    backgroundColor: '#fcfcfc'
+  }
+})
 
 export default class MessageList extends PureComponent {
   componentDidUpdate (prevProps) {
@@ -15,20 +23,26 @@ export default class MessageList extends PureComponent {
 
   render () {
     const {
-      messages = []
+      messages = [],
+      style
     } = this.props
 
     return (
-      <ScrollView
-        ref={node => { this.listView = node }}
-        scrollsToTop={false}>
-        {messages.map((message, index) =>
-          <Message
-            key={`${message.date} ${message.nick} ${index}`}
-            {...message}
-          />
-        )}
-      </ScrollView>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behaviour='position'>
+        <FlatList
+          style={[styles.view, style]}
+          data={messages}
+          renderItem={({item}) =>
+            <Message
+              {...item}
+            />
+          }
+          ref={node => { this.listView = node }}
+          scrollsToTop={false}>
+        </FlatList>
+      </KeyboardAvoidingView>
     )
   }
 }

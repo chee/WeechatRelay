@@ -9,7 +9,7 @@ import {
 const styles = StyleSheet.create({
   input: {
     width: '100%',
-    flex: 1,
+    flexShrink: 1,
     height: 40,
     padding: 6,
     borderColor: '#f25',
@@ -20,18 +20,13 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderRadius: 3,
     backgroundColor: 'white',
-    color: '#c6b',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0
+    color: '#c6b'
   }
 })
 
 export default class Composer extends PureComponent {
   handleSubmit = text => {
     this.props.sendMessage()
-      .then(() => this.inputNode.focus())
   }
 
   render () {
@@ -47,6 +42,8 @@ export default class Composer extends PureComponent {
         behavior='position'>
         <TextInput
           autoFocus
+          blurOnSubmit={false}
+          maxLength={512}
           style={styles.input}
           ref={node => { this.inputNode = node }}
           value={message}

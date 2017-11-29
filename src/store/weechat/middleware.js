@@ -98,6 +98,7 @@ function parseLine (line) {
   })
 
   return {
+    key: date,
     bufferId,
     prefix: weechat.style(prefix),
     date: Number(date),
@@ -218,7 +219,7 @@ export default function weechatMiddleware (store) {
       }
       case getMessages.actionType: {
         const {
-          count = 10
+          count
         } = payload
 
         const {

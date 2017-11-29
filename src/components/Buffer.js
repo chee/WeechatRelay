@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 
 import {
+  SafeAreaView,
   View,
   StyleSheet
 } from 'react-native'
@@ -11,7 +12,7 @@ import Title from './BufferTitle'
 const styles = StyleSheet.create({
   view: {
     flexDirection: 'column',
-    backgroundColor: '#fcfcfc'
+    backgroundColor: '#333'
   }
 })
 
@@ -27,7 +28,7 @@ export default class Buffer extends PureComponent {
     } = this.props
 
     return (
-      <View style={[styles.view, style]}>
+      <SafeAreaView style={[styles.view, style]}>
         <Title
           id={id}
           name={name}
@@ -37,7 +38,7 @@ export default class Buffer extends PureComponent {
         <MessageList
           messages={messages}
         />
-      </View>
+      </SafeAreaView>
     )
   }
 }

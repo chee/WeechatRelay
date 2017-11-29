@@ -2,10 +2,12 @@ import React, {PureComponent} from 'react'
 
 import {
   KeyboardAvoidingView,
-  SafeAreaView,
+  StatusBar,
   View,
   StyleSheet
 } from 'react-native'
+
+import SideMenu from 'react-native-side-menu'
 
 import {
   compose
@@ -24,18 +26,10 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fcfcfc'
-  },
-  bufferWrap: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  bufferList: {
-    flex: 0.1,
-    flexShrink: 1
+    backgroundColor: '#333333'
   },
   buffer: {
-    flex: 2
+    flex: 1
   }
 })
 
@@ -64,28 +58,37 @@ class Main extends PureComponent {
 
     const buffer = buffers[activeBufferId]
 
+    const bufferList =
+      <BufferList
+        style={styles.bufferList}
+        buffers={buffers}
+        selectBuffer={selectBuffer}
+        activeBufferId={activeBufferId}
+      />
+
     return (
-      <SafeAreaView style={styles.view}>
-        <View
-          style={styles.bufferWrap}>
-          <BufferList
-            style={styles.bufferList}
-            buffers={buffers}
-            selectBuffer={selectBuffer}
-            activeBufferId={activeBufferId}
-          />
+      <SideMenu
+        menu={bufferList}
+        style={styles.view}>
+        <StatusBar
+          backgroundColor='#333'
+          barStyle='light-content'
+        />
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behaviour='padding'>
           <Buffer
             style={styles.buffer}
             messages={messages}
             {...buffer}
           />
-        </View>
-        <Composer
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
-        />
-      </SafeAreaView>
+          <Composer
+            message={message}
+            setMessage={setMessage}
+            sendMessage={sendMessage}
+          />
+        </KeyboardAvoidingView>
+      </SideMenu>
     )
   }
 }

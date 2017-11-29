@@ -74,8 +74,8 @@ const addLinks = (text, components = []) => {
     length
   } = url
 
-  const firstKey = `${text}${index}`
-  const secondKey = `${text}${index + length}`
+  const firstKey = `1. ${text}${index}`
+  const secondKey = `2. ${text}${index + length}`
 
   const nextComponents = [
     ...components,

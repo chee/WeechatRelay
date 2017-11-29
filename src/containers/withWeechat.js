@@ -20,6 +20,10 @@ export default function withWeechat (options = {}) {
         this.props.connect({})
       }
 
+      componentWillUnmount () {
+        this.props.disconnect({})
+      }
+
       render () {
         return (
           <WrappedComponent

@@ -10,12 +10,14 @@ import {
 import {
   Text,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  SafeAreaView
 } from 'react-native'
 
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: '#366'
+    backgroundColor: '#366',
+    flex: 1
   },
   item: {
     color: 'white',
@@ -24,6 +26,9 @@ const styles = StyleSheet.create({
   activeItem: {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     color: '#366'
+  },
+  scrollView: {
+    flex: 1
   }
 })
 
@@ -69,16 +74,18 @@ export default class BufferList extends PureComponent {
     } = this.props
 
     return (
-      <ScrollView style={[styles.view, style]}>
-        {sortBuffers(buffers).map(buffer =>
-          <BufferName
-            {...buffer}
-            key={buffer.id}
-            selectBuffer={selectBuffer}
-            active={activeBufferId === buffer.id}
-          />
-        )}
-      </ScrollView >
+      <SafeAreaView style={[styles.view, style]}>
+        <ScrollView style={[styles.scrollView, style]}>
+          {sortBuffers(buffers).map(buffer =>
+            <BufferName
+              {...buffer}
+              key={buffer.id}
+              selectBuffer={selectBuffer}
+              active={activeBufferId === buffer.id}
+            />
+          )}
+        </ScrollView>
+      </SafeAreaView>
     )
   }
 }

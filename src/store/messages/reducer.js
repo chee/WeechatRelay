@@ -34,8 +34,6 @@ export default createReducer(getInitialState, {
       }
     }
 
-
-
     return {
       ...state,
       [bufferId]: [message]
