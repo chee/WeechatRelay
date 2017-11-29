@@ -4,14 +4,11 @@ import {
   Text,
   View,
   StyleSheet,
-  WebView as NativeWebView
+  WebView
 } from 'react-native'
 
 const styles = StyleSheet.create({
   wrapper: {
-    display: 'flex'
-  },
-  inner: {
     display: 'flex',
     borderWidth: 1,
     borderRadius: 2,
@@ -22,30 +19,16 @@ const styles = StyleSheet.create({
   }
 })
 
-const WebView = NativeWebView || class WebView extends PureComponent {
-  render () {
-    const {
-      source: {
-        html: __html
-      }
-    } = this.props
-
-    return (
-      <Text
-        dangerouslySetInnerHTML={{__html}}
-      />
-    )
-  }
-}
-
 export default class Embed extends PureComponent {
-  state = {}
+  state = {
+    oembed: {},
+    height: 100
+  }
 
-  receiveOembed = oembed => {
+  receiveOembed = oembed =>
     this.setState({
       oembed
     })
-  }
 
   componentDidMount () {
     fetch(`https://noembed.com/embed?url=${this.props.url}`)
@@ -53,20 +36,40 @@ export default class Embed extends PureComponent {
       .then(this.receiveOembed)
   }
 
+  updateWebViewHeight = event => {
+    console.log('hello', event.jsEvaluationValue)
+    this.setState({
+      height: event.jsEvaluationValue
+    })
+  }
+
   render () {
     const {
-      oembed
+      oembed,
+      height
     } = this.state
 
     if (!oembed) return null
 
     if (!oembed.html) return null
 
+
+    console.log(oembed.html )
+
     return (
-      <View style={styles.wrapper}>
-        <View style={styles.inner}>
-          <WebView source={{html: oembed.html}} />
-        </View>
+      <View style={[styles.wrapper]}>
+        <WebView
+          style={[styles.web, {height}]}
+          injectJavascript={what => {
+            console.log(what)
+            document.body.style.backgroundColor = '#ff2a50'
+          }}
+          injectedJavascript='document.body.scrollHeight'
+          scrollEnabled={false}
+          automaticallyAdjustContentInsets={true}
+          onLoad={this.updateWebViewHeight}
+          source={{html: oembed.html}}
+        />
       </View>
     )
   }
