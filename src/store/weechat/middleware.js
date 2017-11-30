@@ -51,7 +51,6 @@ function parseBufferLine (buffer) {
   const id = buffer.pointers[0]
 
   const {
-    nick,
     number = 0,
     local_variables: {
       channel: name = buffer.local_variables.plugin,
@@ -61,8 +60,8 @@ function parseBufferLine (buffer) {
   } = buffer
 
   return {
+    key: `${number} ${server} ${name}`,
     id,
-    nick,
     number,
     name,
     server,
@@ -70,7 +69,16 @@ function parseBufferLine (buffer) {
   }
 }
 
-function parseLine (line) {
+function createLineKey (line, index) {
+  const {
+    date,
+    message
+  } = line
+
+  return `${index}: ${date} ${weechat.noStyle(message)}`
+}
+
+function parseLine (line, index) {
   const {
     tags_array: tags,
     date,
@@ -98,7 +106,7 @@ function parseLine (line) {
   })
 
   return {
-    key: date,
+    key: createLineKey(line, index),
     bufferId,
     prefix: weechat.style(prefix),
     date: Number(date),
@@ -185,8 +193,8 @@ export default function weechatMiddleware (store) {
             ? line
             : [line]
 
-          lines.forEach(line => {
-            next(addMessage(parseLine(line)))
+          lines.forEach((line, index) => {
+            next(addMessage(parseLine(line, index)))
           })
         })
 
@@ -238,8 +246,8 @@ export default function weechatMiddleware (store) {
             ? line.reverse()
             : [line]
 
-          lines.forEach(line => {
-            next(addMessage(parseLine(line)))
+          lines.forEach((line, index) => {
+            next(addMessage(parseLine(line, index)))
           })
         })
 
