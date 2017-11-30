@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react'
 
 import {
-  FlatList,
   StyleSheet,
-  KeyboardAvoidingView
+  View,
+  FlatList
 } from 'react-native'
 
 import Message from './Message'
@@ -15,34 +15,51 @@ const styles = StyleSheet.create({
 })
 
 export default class MessageList extends PureComponent {
-  componentDidUpdate (prevProps) {
-    if (this.props.messages === prevProps.messages) return
+  state = {}
 
-    this.listView.scrollToEnd({animated: true})
+  events = []
+
+  scrollToEnd = () =>
+    this.list && this.list.scrollToEnd({animated: true})
+
+   componentDidMount () {
+     this.scrollToEnd()
+   }
+
+  componentDidUpdate (prevProps) {
+    const {
+      messages,
+      keyboardShown
+    } = this.props
+
+    if (keyboardShown !== prevProps.keyboardShown) {
+      this.scrollToEnd()
+    }
+
+    if (messages !== prevProps.messages) {
+      this.scrollToEnd()
+    }
   }
 
   render () {
     const {
       messages = [],
-      style
+      style,
+      keyboardHeight
     } = this.props
 
     return (
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behaviour='position'>
-        <FlatList
-          style={[styles.view, style]}
-          data={messages}
-          renderItem={({item}) =>
-            <Message
-              {...item}
-            />
-          }
-          ref={node => { this.listView = node }}
-          scrollsToTop={false}>
-        </FlatList>
-      </KeyboardAvoidingView>
+      <FlatList
+        style={styles.view}
+        data={messages}
+        renderItem={({item}) =>
+          <Message
+            {...item}
+          />
+        }
+        ref={node => { this.list = node }}
+        scrollsToTop={false}>
+      </FlatList>
     )
   }
 }
