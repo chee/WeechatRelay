@@ -29,6 +29,16 @@ export default class Composer extends PureComponent {
     this.props.sendMessage()
   }
 
+  componentDidUpdate (prevProps) {
+    const {
+      activeBufferId
+    } = this.props
+
+    if (activeBufferId !== prevProps.activeBufferId) {
+      this.keyboard && this.keyboard.focus()
+    }
+  }
+
   render () {
     const {
       message,
@@ -38,22 +48,20 @@ export default class Composer extends PureComponent {
     } = this.props
 
     return (
-      <KeyboardAvoidingView
-        behavior='position'>
-        <TextInput
-          autoFocus
-          blurOnSubmit={false}
-          maxLength={512}
-          style={styles.input}
-          ref={node => { this.inputNode = node }}
-          value={message}
-          onChangeText={setMessage}
-          onFocus={setComposerFocused}
-          onBlur={unsetComposerFocused}
-          onSubmitEditing={this.handleSubmit}
-          returnKeyType='send'
-        />
-      </KeyboardAvoidingView>
+      <TextInput
+        ref={node => { this.keyboard = node }}
+        autoFocus
+        blurOnSubmit={false}
+        maxLength={512}
+        style={styles.input}
+        ref={node => { this.inputNode = node }}
+        value={message}
+        onChangeText={setMessage}
+        onFocus={setComposerFocused}
+        onBlur={unsetComposerFocused}
+        onSubmitEditing={this.handleSubmit}
+        returnKeyType='send'
+      />
     )
   }
 }
