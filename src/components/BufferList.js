@@ -9,10 +9,13 @@ import {
 
 import {
   Text,
-  ScrollView,
   StyleSheet,
   SafeAreaView
 } from 'react-native'
+
+import {
+  KeyboardAwareFlatList
+} from 'react-native-keyboard-aware-scroll-view'
 
 const styles = StyleSheet.create({
   view: {
@@ -75,16 +78,17 @@ export default class BufferList extends PureComponent {
 
     return (
       <SafeAreaView style={[styles.view, style]}>
-        <ScrollView style={[styles.scrollView, style]}>
-          {sortBuffers(buffers).map(buffer =>
+        <KeyboardAwareFlatList
+          data={sortBuffers(buffers)}
+          renderItem={({item: buffer}) =>
             <BufferName
               {...buffer}
-              key={buffer.id}
               selectBuffer={selectBuffer}
               active={activeBufferId === buffer.id}
             />
-          )}
-        </ScrollView>
+          }
+          style={[styles.scrollView, style]}
+        />
       </SafeAreaView>
     )
   }
