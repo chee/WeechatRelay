@@ -1,3 +1,5 @@
+import config from '../../../config.json'
+
 import * as weechat from '../../weechat'
 
 import {
@@ -156,13 +158,18 @@ export default function weechatMiddleware (store) {
 
     switch (type) {
       case connect.actionType: {
+        const options = {
+          ...config,
+          ...payload
+        }
+
         const {
-          host = process.env.REACT_APP_HOST,
-          port = process.env.REACT_APP_PORT,
-          password = process.env.REACT_APP_PASSWORD,
-          ssl = process.env.REACT_APP_SSL,
+          host,
+          port,
+          password,
+          ssl,
           reconnect
-        } = payload
+        } = options
 
         await createClient({
           host,

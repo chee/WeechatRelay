@@ -5,14 +5,16 @@
 ### getting going
 
 ```sh
-cp .env .env.local
-$EDITOR .env.local
+cp config.example.json config.json
+$EDITOR config.json
 
-# add your HOST, PORT, PASSWORD and relay SSL preference to .env.local
+# add your host, port, password and relay ssl preference to config.json
 
-npm install
-npm start
+yarn
 
-# browse to http://localhost:3000
+yarn start
+
+# open Expo on your phone
+# scan qr code
 # eat, drink and be merry
 ```
