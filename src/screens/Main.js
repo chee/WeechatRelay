@@ -1,9 +1,8 @@
 import React, {PureComponent} from 'react'
 
 import {
-  KeyboardAvoidingView,
   StatusBar,
-  View,
+  KeyboardAvoidingView,
   StyleSheet
 } from 'react-native'
 
@@ -14,6 +13,7 @@ import {
 } from 'redux'
 
 import withBuffers from '../containers/withBuffers'
+import withKeyboard from '../containers/withKeyboard'
 import withMessage from '../containers/withMessage'
 import withMessages from '../containers/withMessages'
 import withWeechat from '../containers/withWeechat'
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#333333'
   },
-  buffer: {
+  bufferWrapper: {
     flex: 1
   }
 })
@@ -53,7 +53,9 @@ class Main extends PureComponent {
       setMessage,
       sendMessage,
       selectBuffer,
-      activeBufferId
+      activeBufferId,
+      keyboardShown,
+      keyboardHeight
     } = this.props
 
     const buffer = buffers[activeBufferId]
@@ -75,14 +77,17 @@ class Main extends PureComponent {
           barStyle='light-content'
         />
         <KeyboardAvoidingView
-          style={{flex: 1}}
-          behaviour='padding'>
+          style={styles.bufferWrapper}
+          behavior='padding'>
           <Buffer
+            keyboardHeight={keyboardHeight}
             style={styles.buffer}
             messages={messages}
+            keyboardShown={keyboardShown}
             {...buffer}
           />
           <Composer
+            activeBufferId={activeBufferId}
             message={message}
             setMessage={setMessage}
             sendMessage={sendMessage}
@@ -95,6 +100,7 @@ class Main extends PureComponent {
 
 export default compose(
   withWeechat(),
+  withKeyboard(),
   withMessages(),
   withMessage(),
   withBuffers()
