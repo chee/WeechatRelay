@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 
 import {
+  Image,
   Text,
   View,
   StyleSheet,
@@ -15,14 +16,27 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     margin: 5,
     backgroundColor: '#f7f7f7',
-    padding: 5
+    padding: 5,
+    minHeight: 100
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'contain'
   }
 })
+
+const getNoembedUrl = url =>
+  `https://noembed.com/embed?url=${url}`
+
+const getContentTypeUrl = url =>
+  `https://content-type.herokuapp.com/${url}`
+
 
 export default class Embed extends PureComponent {
   state = {
     oembed: {},
-    height: 100
+    webviewHeight: 100,
+    contentType: ''
   }
 
   receiveOembed = oembed =>
@@ -30,46 +44,65 @@ export default class Embed extends PureComponent {
       oembed
     })
 
-  componentDidMount () {
-    fetch(`https://noembed.com/embed?url=${this.props.url}`)
+  fetchOembed = () =>
+    fetch(getNoembedUrl(this.props.url))
       .then(response => response.json())
       .then(this.receiveOembed)
+
+  receiveContentType = contentType =>
+    contentType && this.setState({
+      contentType: contentType.replace()
+    })
+
+  fetchContentType = () =>
+    fetch(getContentTypeUrl(this.props.url), {
+      method: 'HEAD'
+    })
+      .then(response => response.headers.get('content-type'))
+      .then(this.receiveContentType)
+
+  componentDidMount () {
+    this.fetchContentType()
+    this.fetchOembed()
   }
 
   updateWebViewHeight = event => {
-    console.log('hello', event.jsEvaluationValue)
     this.setState({
-      height: event.jsEvaluationValue
+      webviewHeight: event.jsEvaluationValue
     })
   }
 
   render () {
     const {
+      url
+    } = this.props
+
+    const {
       oembed,
-      height
+      webviewHeight,
+      contentType
     } = this.state
 
-    if (!oembed) return null
-
-    if (!oembed.html) return null
-
-
-    console.log(oembed.html )
+    if (!oembed.html && !contentType) return null
 
     return (
       <View style={[styles.wrapper]}>
-        <WebView
-          style={[styles.web, {height}]}
-          injectJavascript={what => {
-            console.log(what)
-            document.body.style.backgroundColor = '#ff2a50'
-          }}
-          injectedJavascript='document.body.scrollHeight'
-          scrollEnabled={false}
-          automaticallyAdjustContentInsets={true}
-          onLoad={this.updateWebViewHeight}
-          source={{html: oembed.html}}
-        />
+        {oembed.html &&
+          <WebView
+            style={[styles.web, {height: webviewHeight}]}
+            injectedJavascript='document.body.scrollHeight'
+            scrollEnabled={false}
+            automaticallyAdjustContentInsets={true}
+            onLoad={this.updateWebViewHeight}
+            source={{html: oembed.html}}
+          />
+        }
+        {contentType.startsWith('image') &&
+          <Image
+            source={{uri: url}}
+            style={styles.image}
+          />
+        }
       </View>
     )
   }
