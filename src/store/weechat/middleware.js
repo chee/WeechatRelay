@@ -32,11 +32,6 @@ import flag from './flag'
 
 const NICK_REGEX = /^nick_(\S+)/i
 
-const REACT_APP_HOST = 'snake.dog'
-const REACT_APP_PORT = '1025'
-const REACT_APP_PASSWORD = ''
-const REACT_APP_SSL = 'true'
-
 function createBufferCommand ({bufferId = 'gui_buffers(*)'}) {
   return `hdata buffer:${bufferId} number,short_name,title,local_variables`
 }
@@ -162,10 +157,10 @@ export default function weechatMiddleware (store) {
     switch (type) {
       case connect.actionType: {
         const {
-          host = REACT_APP_HOST,
-          port = REACT_APP_PORT,
-          password = REACT_APP_PASSWORD,
-          ssl = REACT_APP_SSL,
+          host = process.env.REACT_APP_HOST,
+          port = process.env.REACT_APP_PORT,
+          password = process.env.REACT_APP_PASSWORD,
+          ssl = process.env.REACT_APP_SSL,
           reconnect
         } = payload
 
