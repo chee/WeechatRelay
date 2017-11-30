@@ -42,16 +42,21 @@ const styles = StyleSheet.create({
     flex: 0.2
   },
   bit: {
-    marginRight: 4,
-    lineHeight: 18
+    lineHeight: 18,
+    marginRight: 4
   },
-  message: {
+  line: {
     flexDirection: 'row',
     padding: 2,
     flex: 1
   },
   link: {
     color: '#49c'
+  },
+  message: {
+    flexDirection: 'row',
+    flex: 1,
+    width: 0
   }
 })
 
@@ -141,17 +146,19 @@ export default class Message extends PureComponent {
 
     return (
       <View style={styles.wrapper}>
-        <View style={styles.message}>
+        <View style={styles.line}>
           {prefix &&
             <Bits
               bits={prefix}
             />
           }
           {message &&
-            <Bits
-              handleUrls={this.handleUrls}
-              bits={message}
-            />
+            <Text style={styles.message}>
+              <Bits
+                handleUrls={this.handleUrls}
+                bits={message}
+              />
+            </Text>
           }
         </View>
         {uniq(urls).map(url =>
